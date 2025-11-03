@@ -11,13 +11,27 @@ import { loadJson, STORAGE_KEYS } from '../utils/storage';
 import { formatInrShort } from '../utils/format';
 
 export function Inputs() {
-  const [inputs, setInputs] = React.useState<PlanInputs>(defaults as unknown as PlanInputs);
-  const result = React.useMemo(() => projectPlan(inputs), [inputs]);
-  const rows = result.rows.map((r) => ({ age: r.age, nominal: r.endBalance, real: r.endBalanceReal }));
+  type PlannerForm = Pick<PlanInputs, 'currentAge' | 'retirementAge' | 'lifeExpectancyAge' | 'targetRetirementSpending' | 'spendingInTodaysDollars'>;
+  const [form, setForm] = React.useState<PlannerForm>(loadJson(STORAGE_KEYS.planner, defaults as any));
   const assumptions = useAssumptions();
   const storedProgress = loadJson(STORAGE_KEYS.progress, progressDefaults as any);
   const latest = latestSnapshot((storedProgress.snapshots ?? progressDefaults.snapshots) as any);
   const startNetWorth = latest ? (latest.assets - latest.liabilities) : undefined;
+  const projectionInputs: PlanInputs = React.useMemo(() => ({
+    currentAge: form.currentAge,
+    retirementAge: form.retirementAge,
+    lifeExpectancyAge: form.lifeExpectancyAge,
+    currentNetWorth: startNetWorth ?? 0,
+    annualIncome: 0,
+    annualExpenses: 0,
+    preRetirementReturn: assumptions.preRetirementReturn,
+    postRetirementReturn: assumptions.postRetirementReturn,
+    inflationRate: assumptions.inflationRate,
+    targetRetirementSpending: form.targetRetirementSpending,
+    spendingInTodaysDollars: form.spendingInTodaysDollars,
+  }), [form, startNetWorth, assumptions]);
+  const result = React.useMemo(() => projectPlan(projectionInputs), [projectionInputs]);
+  const rows = result.rows.map((r) => ({ age: r.age, nominal: r.endBalance, real: r.endBalanceReal }));
 
   return (
     <Grid>
@@ -25,9 +39,9 @@ export function Inputs() {
         <Card withBorder>
           <Stack>
             <Text fw={600}>Inputs</Text>
-            <NumberInput label="Current age" value={inputs.currentAge} onChange={(v) => setInputs({ ...inputs, currentAge: Number(v) || 0 })} />
-            <NumberInput label="Retirement age" value={inputs.retirementAge} onChange={(v) => setInputs({ ...inputs, retirementAge: Number(v) || 0 })} />
-            <NumberInput label="Life expectancy" value={inputs.lifeExpectancyAge} onChange={(v) => setInputs({ ...inputs, lifeExpectancyAge: Number(v) || 0 })} />
+            <NumberInput label="Current age" value={form.currentAge} onChange={(v) => { const next = { ...form, currentAge: Number(v) || 0 }; setForm(next); localStorage.setItem(STORAGE_KEYS.planner, JSON.stringify(next)); }} />
+            <NumberInput label="Retirement age" value={form.retirementAge} onChange={(v) => { const next = { ...form, retirementAge: Number(v) || 0 }; setForm(next); localStorage.setItem(STORAGE_KEYS.planner, JSON.stringify(next)); }} />
+            <NumberInput label="Life expectancy" value={form.lifeExpectancyAge} onChange={(v) => { const next = { ...form, lifeExpectancyAge: Number(v) || 0 }; setForm(next); localStorage.setItem(STORAGE_KEYS.planner, JSON.stringify(next)); }} />
             <Group justify="space-between">
               <Text size="sm" c="dimmed">Start Net Worth</Text>
               <Text fw={600}>{startNetWorth ? formatInrShort(startNetWorth) : '—'}</Text>
@@ -40,8 +54,8 @@ export function Inputs() {
               <Text size="sm" c="dimmed">Pre/Post returns</Text>
               <Text fw={600}>{(assumptions.preRetirementReturn * 100).toFixed(1)}% / {(assumptions.postRetirementReturn * 100).toFixed(1)}%</Text>
             </Group>
-            <NumberInput label="Target retirement spending (₹)" value={inputs.targetRetirementSpending} onChange={(v) => setInputs({ ...inputs, targetRetirementSpending: Number(v) || 0 })} thousandSeparator />
-            <Switch label="Spending in today's rupees" checked={inputs.spendingInTodaysDollars} onChange={(e) => setInputs({ ...inputs, spendingInTodaysDollars: e.currentTarget.checked })} />
+            <NumberInput label="Target retirement spending (₹)" value={form.targetRetirementSpending} onChange={(v) => { const next = { ...form, targetRetirementSpending: Number(v) || 0 }; setForm(next); localStorage.setItem(STORAGE_KEYS.planner, JSON.stringify(next)); }} thousandSeparator />
+            <Switch label="Spending in today's rupees" checked={form.spendingInTodaysDollars} onChange={(e) => { const next = { ...form, spendingInTodaysDollars: e.currentTarget.checked }; setForm(next); localStorage.setItem(STORAGE_KEYS.planner, JSON.stringify(next)); }} />
           </Stack>
         </Card>
       </Grid.Col>
