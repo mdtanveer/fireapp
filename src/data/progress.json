@@ -1,0 +1,11 @@
+{
+  "snapshots": [
+    { "id": "s1", "date": "2019-04-16", "assets": 7500000, "liabilities": 0, "savings": 618000, "investments": 4420000, "realAssetEquity": 2462000, "unsecuredDebt": 0 },
+    { "id": "s2", "date": "2020-05-06", "assets": 12000000, "liabilities": 0, "savings": 988000, "investments": 7072000, "realAssetEquity": 3939000, "unsecuredDebt": 0 },
+    { "id": "s3", "date": "2021-10-16", "assets": 17000000, "liabilities": 0, "savings": 1401000, "investments": 10000000, "realAssetEquity": 5588000, "unsecuredDebt": 0 },
+    { "id": "s4", "date": "2022-01-16", "assets": 16000000, "liabilities": 0, "savings": 1221000, "investments": 9915000, "realAssetEquity": 4864000, "unsecuredDebt": 0 },
+    { "id": "s5", "date": "2022-03-30", "assets": 18000000, "liabilities": 120000, "savings": 1150000, "investments": 15000000, "realAssetEquity": 2790000, "unsecuredDebt": 120000 }
+  ]
+}
+
+

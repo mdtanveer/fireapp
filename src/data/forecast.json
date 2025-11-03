@@ -1,0 +1,12 @@
+{
+  "startNetWorth": 11800000,
+  "inflationRate": 0.05,
+  "defaultMonthlyReturn": 0.008,
+  "horizonMonths": 360,
+  "heads": [
+    { "id": "inc-salary", "kind": "income", "name": "Salary", "amount": 150000, "inputDate": "2019-01-01", "frequency": "monthly", "annualGrowthRate": 0.07, "matchInflation": false, "essential": true },
+    { "id": "exp-living", "kind": "expense", "name": "Living Expenses", "amount": 90000, "inputDate": "2019-01-01", "frequency": "monthly", "annualGrowthRate": 0.05, "matchInflation": true, "essential": true }
+  ]
+}
+
+

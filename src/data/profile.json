@@ -1,0 +1,15 @@
+{
+  "currentAge": 35,
+  "retirementAge": 60,
+  "lifeExpectancyAge": 90,
+  "currentNetWorth": 12000000,
+  "annualIncome": 1800000,
+  "annualExpenses": 900000,
+  "preRetirementReturn": 0.10,
+  "postRetirementReturn": 0.07,
+  "inflationRate": 0.05,
+  "targetRetirementSpending": 1200000,
+  "spendingInTodaysDollars": true
+}
+
+
