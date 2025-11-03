@@ -1,4 +1,4 @@
-import { Button, Group, Popover, NumberInput, Stack, SegmentedControl, FileButton } from '@mantine/core';
+import { Button, Group, Popover, NumberInput, Stack, SegmentedControl, FileButton, TextInput } from '@mantine/core';
 import { IconAdjustments, IconPercentage } from '@tabler/icons-react';
 import React from 'react';
 import { useAssumptions } from '../../state/AssumptionsContext';
@@ -14,6 +14,7 @@ export function GlobalParams() {
     pre: assumptions.preRetirementReturn,
     post: assumptions.postRetirementReturn,
     monthly: assumptions.defaultMonthlyReturn,
+    planStartDate: assumptions.planStartDate,
   });
 
   React.useEffect(() => {
@@ -22,6 +23,7 @@ export function GlobalParams() {
       pre: assumptions.preRetirementReturn,
       post: assumptions.postRetirementReturn,
       monthly: assumptions.defaultMonthlyReturn,
+      planStartDate: assumptions.planStartDate,
     });
   }, [assumptions]);
 
@@ -36,9 +38,10 @@ export function GlobalParams() {
         <Popover.Dropdown>
           <Stack>
             <NumberInput label="Annual inflation (%)" value={local.inflationRate * 100} onChange={(v) => setLocal((s) => ({ ...s, inflationRate: (Number(v) || 0) / 100 }))} step={0.1} min={0} max={50} />
+            <TextInput label="Plan start date (YYYY-MM-DD)" value={local.planStartDate} onChange={(e) => setLocal((s) => ({ ...s, planStartDate: e.currentTarget.value }))} />
             <Group justify="space-between">
               <Button size="xs" variant="default" onClick={() => assumptions.resetAssumptions()}>Reset</Button>
-              <Button size="xs" onClick={() => { assumptions.setAssumptions({ inflationRate: local.inflationRate }); setOpenedInf(false); }}>Apply</Button>
+              <Button size="xs" onClick={() => { assumptions.setAssumptions({ inflationRate: local.inflationRate, planStartDate: local.planStartDate }); setOpenedInf(false); }}>Apply</Button>
             </Group>
           </Stack>
         </Popover.Dropdown>

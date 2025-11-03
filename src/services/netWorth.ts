@@ -21,16 +21,17 @@ function monthsForRange(range: TimeRange): number {
 export function generateNetWorthSeries(
   assets: NetWorthItem[],
   liabilities: NetWorthItem[],
-  range: TimeRange
+  range: TimeRange,
+  planStartDate?: string
 ): SeriesPoint[] {
   const months = monthsForRange(range);
-  const date = new Date();
+  const base = planStartDate ? new Date(planStartDate) : new Date();
   let assetValues = assets.map((a) => a.currentValue);
   let liabilityValues = liabilities.map((l) => l.currentValue);
 
   const points: SeriesPoint[] = [];
   for (let m = 0; m <= months; m += 1) {
-    const d = new Date(date.getFullYear(), date.getMonth() + m, 1);
+    const d = new Date(base.getFullYear(), base.getMonth() + m, 1);
     const netWorth = assetValues.reduce((s, v) => s + v, 0) - liabilityValues.reduce((s, v) => s + v, 0);
     points.push({ date: d.toISOString().slice(0, 10), netWorth });
 

@@ -28,12 +28,23 @@ export function saveJson<T>(key: string, value: T) {
   } catch {}
 }
 
+// Lazy-load defaults to ensure export works even before user edits (no LS yet)
+let defaultNetworth: any; try { defaultNetworth = (await import('../data/networth.json')).default; } catch {}
+let defaultForecast: any; try { defaultForecast = (await import('../data/forecast.json')).default; } catch {}
+let defaultProgress: any; try { defaultProgress = (await import('../data/progress.json')).default; } catch {}
+let defaultAssumptions: any; try { defaultAssumptions = (await import('../data/assumptions.json')).default; } catch {}
+
 export function exportAppData(): AppData {
+  const networthRaw = localStorage.getItem(STORAGE_KEYS.networth);
+  const forecastRaw = localStorage.getItem(STORAGE_KEYS.forecast);
+  const progressRaw = localStorage.getItem(STORAGE_KEYS.progress);
+  const assumptionsRaw = localStorage.getItem(STORAGE_KEYS.assumptions);
+
   return {
-    networth: JSON.parse(localStorage.getItem(STORAGE_KEYS.networth) || 'null'),
-    forecast: JSON.parse(localStorage.getItem(STORAGE_KEYS.forecast) || 'null'),
-    progress: JSON.parse(localStorage.getItem(STORAGE_KEYS.progress) || 'null'),
-    assumptions: JSON.parse(localStorage.getItem(STORAGE_KEYS.assumptions) || 'null'),
+    networth: networthRaw ? JSON.parse(networthRaw) : defaultNetworth ?? null,
+    forecast: forecastRaw ? JSON.parse(forecastRaw) : defaultForecast ?? null,
+    progress: progressRaw ? JSON.parse(progressRaw) : defaultProgress ?? null,
+    assumptions: assumptionsRaw ? JSON.parse(assumptionsRaw) : defaultAssumptions ?? null,
   };
 }
 

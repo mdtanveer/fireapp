@@ -16,7 +16,7 @@ export function CashflowForm({ inputs, onChange }: { inputs: ForecastInputs; onC
 
   function amountDisplay(h: CashflowHead) {
     if ((assumptions.displayCashflowsAs ?? 'current') === 'current') {
-      const amt = currentAmountForHead(h, assumptions.inflationRate);
+      const amt = currentAmountForHead(h, assumptions.inflationRate, new Date(assumptions.planStartDate));
       return `${formatInrShort(amt)} / ${h.frequency}`;
     }
     return `${formatInrShort(h.amount)} / ${h.frequency} (${h.inputDate?.slice(0, 7) ?? '—'})`;

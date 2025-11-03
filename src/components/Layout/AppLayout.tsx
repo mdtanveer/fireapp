@@ -25,7 +25,6 @@ export function AppLayout() {
         <Group gap="xs" align="stretch" style={{ flexDirection: 'column' }}>
           <Link to="/">Dashboard</Link>
           <Link to="/plan">Plan</Link>
-          <Link to="/inputs">Inputs</Link>
           <Link to="/forecast">Forecast</Link>
           <Link to="/progress">Progress</Link>
           <Text size="xs" c="dimmed">{location.pathname}</Text>

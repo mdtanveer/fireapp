@@ -6,9 +6,10 @@ import { Snapshot } from '../types/progress';
 import { toSeries } from '../services/progress';
 import { formatInrShort } from '../utils/format';
 import { SnapshotDrawer } from '../components/progress/SnapshotDrawer';
+import { loadJson, saveJson, STORAGE_KEYS } from '../utils/storage';
 
 export function Progress() {
-  const [rows, setRows] = React.useState<Snapshot[]>(data.snapshots as unknown as Snapshot[]);
+  const [rows, setRows] = React.useState<Snapshot[]>(loadJson(STORAGE_KEYS.progress, data as any).snapshots ?? (data.snapshots as any));
   const series = React.useMemo(() => toSeries(rows), [rows]);
   const [opened, setOpened] = React.useState(false);
   const [editing, setEditing] = React.useState<Snapshot | undefined>(undefined);
@@ -75,9 +76,12 @@ export function Progress() {
           if (idx >= 0) {
             const copy = [...prev];
             copy[idx] = s;
+            saveJson(STORAGE_KEYS.progress, { snapshots: copy });
             return copy;
           }
-          return [...prev, s];
+          const next = [...prev, s];
+          saveJson(STORAGE_KEYS.progress, { snapshots: next });
+          return next;
         });
       }} />
     </Stack>

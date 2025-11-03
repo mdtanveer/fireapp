@@ -29,7 +29,7 @@ export function currentAmountForHead(head: CashflowHead, inflation: number, now:
   return grown; // monthly amount as of now
 }
 
-export function forecastNetWorth(inputs: ForecastInputs): ForecastResult {
+export function forecastNetWorth(inputs: ForecastInputs, planStartDate?: string): ForecastResult {
   const points: ForecastPoint[] = [];
   let nw = inputs.startNetWorth;
   for (let m = 0; m <= inputs.horizonMonths; m += 1) {
@@ -39,8 +39,8 @@ export function forecastNetWorth(inputs: ForecastInputs): ForecastResult {
     const expense = expenses.reduce((s, h) => s + monthlyAmountForHead(h, m, inputs.inflationRate), 0);
     const surplus = income - expense;
     nw = (nw + surplus) * (1 + inputs.defaultMonthlyReturn);
-    const date = new Date();
-    const d = new Date(date.getFullYear(), date.getMonth() + m, 1);
+    const base = planStartDate ? new Date(planStartDate) : new Date();
+    const d = new Date(base.getFullYear(), base.getMonth() + m, 1);
     points.push({ monthIndex: m, date: d.toISOString().slice(0, 10), netWorth: nw });
   }
   return { points };
