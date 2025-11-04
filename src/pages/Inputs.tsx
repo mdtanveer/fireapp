@@ -14,7 +14,7 @@ import { LineChart } from "@mantine/charts";
 import { useAssumptions } from "../state/AssumptionsContext";
 import progressDefaults from "../data/progress.json";
 import { latestSnapshot } from "../services/progress";
-import { loadJson, STORAGE_KEYS } from "../utils/storage";
+import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 import { formatInrShort } from "../utils/format";
 import { useNetWorth } from "../state/NetWorthContext";
 
@@ -28,7 +28,7 @@ export function Inputs() {
     | "spendingInTodaysDollars"
   >;
   const [form, setForm] = React.useState<PlannerForm>(
-    loadJson(STORAGE_KEYS.planner, {} as any)
+    loadJson("fire.planner", {} as any)
   );
   const assumptions = useAssumptions();
   const { netWorth } = useNetWorth();
@@ -78,10 +78,7 @@ export function Inputs() {
               onChange={(v) => {
                 const next = { ...form, currentAge: Number(v) || 0 };
                 setForm(next);
-                localStorage.setItem(
-                  STORAGE_KEYS.planner,
-                  JSON.stringify(next)
-                );
+                saveJson(STORAGE_KEYS.planner, next);
               }}
             />
             <NumberInput
@@ -90,10 +87,7 @@ export function Inputs() {
               onChange={(v) => {
                 const next = { ...form, retirementAge: Number(v) || 0 };
                 setForm(next);
-                localStorage.setItem(
-                  STORAGE_KEYS.planner,
-                  JSON.stringify(next)
-                );
+                saveJson(STORAGE_KEYS.planner, next);
               }}
             />
             <NumberInput
@@ -102,10 +96,7 @@ export function Inputs() {
               onChange={(v) => {
                 const next = { ...form, lifeExpectancyAge: Number(v) || 0 };
                 setForm(next);
-                localStorage.setItem(
-                  STORAGE_KEYS.planner,
-                  JSON.stringify(next)
-                );
+                saveJson(STORAGE_KEYS.planner, next);
               }}
             />
             <Group justify="space-between">
@@ -142,10 +133,7 @@ export function Inputs() {
                   targetRetirementSpending: Number(v) || 0,
                 };
                 setForm(next);
-                localStorage.setItem(
-                  STORAGE_KEYS.planner,
-                  JSON.stringify(next)
-                );
+                saveJson(STORAGE_KEYS.planner, next);
               }}
               thousandSeparator
             />
@@ -158,10 +146,7 @@ export function Inputs() {
                   spendingInTodaysDollars: e.currentTarget.checked,
                 };
                 setForm(next);
-                localStorage.setItem(
-                  STORAGE_KEYS.planner,
-                  JSON.stringify(next)
-                );
+                saveJson(STORAGE_KEYS.planner, next);
               }}
             />
           </Stack>

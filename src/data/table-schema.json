@@ -1,0 +1,11 @@
+{
+  "columns": [
+    "Equity",
+    "Debt",
+    "Foreign Equity",
+    "NPS",
+    "EPF",
+    "Savings",
+    "Real Estate"
+  ]
+}

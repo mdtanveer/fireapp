@@ -11,15 +11,10 @@ import {
 } from "@mantine/core";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import React from "react";
+import { loadJson, saveJson, STORAGE_KEYS } from "../../utils/storage";
 
-// Mock investment types data - in a real app this would be loaded from investmenttypes.json
-const investmentTypes = [
-  { id: "equity", name: "Equity", expectedReturn: 12 },
-  { id: "debt", name: "Debt", expectedReturn: 6 },
-  { id: "savings", name: "Savings", expectedReturn: 4 },
-  { id: "real-estate", name: "Real Estate", expectedReturn: 8 },
-  { id: "mutual-fund", name: "Mutual Fund", expectedReturn: 10 },
-];
+// Load investment types from the data file
+import investmentTypesData from "../../data/investmenttypes.json";
 
 export function TableSchemaEditor({
   opened,
@@ -49,12 +44,14 @@ export function TableSchemaEditor({
   };
 
   const handleSave = () => {
+    // Save the updated columns to localStorage and also to the table-schema.json file
+    saveJson(STORAGE_KEYS.tableSchema, { columns: localColumns });
     onSave(localColumns);
     onClose();
   };
 
   // Convert investment types to Select data format
-  const investmentTypeData = investmentTypes.map((type) => ({
+  const investmentTypeData = investmentTypesData.map((type: any) => ({
     value: type.id,
     label: type.name,
   }));

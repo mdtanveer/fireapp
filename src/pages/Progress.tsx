@@ -28,15 +28,19 @@ export function Progress() {
   const series = React.useMemo(() => toSeries(rows), [rows]);
   const [opened, setOpened] = React.useState(false);
   const [editing, setEditing] = React.useState<Snapshot | undefined>(undefined);
-  const [customColumns, setCustomColumns] = React.useState<string[]>([
-    "Equity",
-    "Debt",
-    "Foreign Equity",
-    "NPS",
-    "EPF",
-    "Savings",
-    "Real Estate",
-  ]);
+  const [customColumns, setCustomColumns] = React.useState<string[]>(
+    loadJson(STORAGE_KEYS.tableSchema, {
+      columns: [
+        "Equity",
+        "Debt",
+        "Foreign Equity",
+        "NPS",
+        "EPF",
+        "Savings",
+        "Real Estate",
+      ],
+    }).columns
+  );
   const [schemaEditorOpened, setSchemaEditorOpened] = React.useState(false);
   const { refreshFromStorage } = useNetWorth();
 

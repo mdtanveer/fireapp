@@ -6,6 +6,7 @@ import { CashflowForm } from "../components/forecast/CashflowForm";
 import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 import { useAssumptions } from "../state/AssumptionsContext";
 import progressDefaults from "../data/progress.json";
+import livingExpensesDefaults from "../data/living-expenses.json";
 import { latestSnapshot } from "../services/progress";
 import { currentAmountForHead } from "../services/forecast";
 import { useNetWorth } from "../state/NetWorthContext";
@@ -18,7 +19,7 @@ export type LivingExpenseInputs = {
 export function LivingExpenses() {
   // Use a separate storage key for living expenses to ensure no data sharing
   const [inputs, setInputs] = React.useState<LivingExpenseInputs>(
-    loadJson("fire.living-expenses", { heads: [] } as any)
+    loadJson(STORAGE_KEYS.livingExpenses, livingExpensesDefaults as any)
   );
   const assumptions = useAssumptions();
   const { netWorth } = useNetWorth();
@@ -103,7 +104,7 @@ export function LivingExpenses() {
               }}
               onChange={(next) => {
                 setInputs({ heads: next.heads });
-                saveJson("fire.living-expenses", { heads: next.heads });
+                saveJson(STORAGE_KEYS.livingExpenses, { heads: next.heads });
               }}
             />
           </Stack>

@@ -1,0 +1,28 @@
+{
+  "heads": [
+    {
+      "id": "1bd7b35b-948b-4b81-bd40-27cbf5750391",
+      "kind": "expense",
+      "name": "Rent",
+      "amount": 6000,
+      "frequency": "monthly",
+      "inputDate": "2025-11-04",
+      "annualGrowthRate": 0,
+      "matchInflation": false,
+      "essential": true,
+      "startMonthOffset": 0
+    },
+    {
+      "id": "9c6cd95f-6ff1-4095-9023-02c8316e9b13",
+      "kind": "income",
+      "name": "Interest",
+      "amount": 5000,
+      "frequency": "monthly",
+      "inputDate": "2025-11-04",
+      "annualGrowthRate": 0,
+      "matchInflation": false,
+      "essential": true,
+      "startMonthOffset": 0
+    }
+  ]
+}
