@@ -8,6 +8,7 @@ import { useAssumptions } from "../state/AssumptionsContext";
 import progressDefaults from "../data/progress.json";
 import { latestSnapshot } from "../services/progress";
 import { currentAmountForHead } from "../services/forecast";
+import { useNetWorth } from "../state/NetWorthContext";
 
 // Define a separate data structure for living expenses with a different storage key
 export type LivingExpenseInputs = {
@@ -20,6 +21,7 @@ export function LivingExpenses() {
     loadJson("fire.living-expenses", { heads: [] } as any)
   );
   const assumptions = useAssumptions();
+  const { netWorth } = useNetWorth();
 
   // derive start net worth from latest snapshot (progress) or 0
   const storedProgress = loadJson(
@@ -29,7 +31,7 @@ export function LivingExpenses() {
   const latest = latestSnapshot(
     (storedProgress.snapshots ?? progressDefaults.snapshots) as any
   );
-  const startNetWorth = latest ? latest.assets - latest.liabilities : 0;
+  const startNetWorth = netWorth ?? 0;
 
   // Calculate total monthly living expenses (properly handling yearly expenses)
   const totalMonthlyExpenses = React.useMemo(() => {

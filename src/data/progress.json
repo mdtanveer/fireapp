@@ -9,7 +9,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 4420000,
           "type": "asset",
           "investmentTypeId": "equity"
@@ -35,7 +35,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 7072000,
           "type": "asset",
           "investmentTypeId": "equity"
@@ -61,7 +61,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 10000000,
           "type": "asset",
           "investmentTypeId": "equity"
@@ -87,7 +87,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 9915000,
           "type": "asset",
           "investmentTypeId": "equity"
@@ -113,7 +113,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 15000000,
           "type": "asset",
           "investmentTypeId": "equity"
@@ -139,7 +139,7 @@
           "type": "asset",
           "investmentTypeId": "savings"
         },
-        "Investments": {
+        "Equity": {
           "value": 15000000,
           "type": "asset",
           "investmentTypeId": "equity"

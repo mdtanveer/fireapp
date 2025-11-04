@@ -33,10 +33,6 @@ export function saveJson<T>(key: string, value: T) {
 }
 
 // Lazy-load defaults to ensure export works even before user edits (no LS yet)
-let defaultNetworth: any;
-try {
-  defaultNetworth = (await import("../data/networth.json")).default;
-} catch {}
 let defaultForecast: any;
 try {
   defaultForecast = (await import("../data/forecast.json")).default;
@@ -49,10 +45,6 @@ let defaultAssumptions: any;
 try {
   defaultAssumptions = (await import("../data/assumptions.json")).default;
 } catch {}
-let defaultPlanner: any;
-try {
-  defaultPlanner = (await import("../data/profile.json")).default;
-} catch {}
 let defaultInvestmentTypes: any;
 try {
   defaultInvestmentTypes = (await import("../data/investmenttypes.json"))
@@ -60,7 +52,6 @@ try {
 } catch {}
 
 export function exportAppData(): AppData {
-  const networthRaw = localStorage.getItem(STORAGE_KEYS.networth);
   const forecastRaw = localStorage.getItem(STORAGE_KEYS.forecast);
   const progressRaw = localStorage.getItem(STORAGE_KEYS.progress);
   const assumptionsRaw = localStorage.getItem(STORAGE_KEYS.assumptions);
@@ -68,7 +59,6 @@ export function exportAppData(): AppData {
   const investmenttypesRaw = localStorage.getItem(STORAGE_KEYS.investmenttypes);
 
   return {
-    networth: networthRaw ? JSON.parse(networthRaw) : defaultNetworth ?? null,
     forecast: forecastRaw ? JSON.parse(forecastRaw) : defaultForecast ?? null,
     progress: progressRaw ? JSON.parse(progressRaw) : defaultProgress ?? null,
     assumptions: assumptionsRaw
@@ -82,7 +72,6 @@ export function exportAppData(): AppData {
 }
 
 export function importAppData(data: AppData) {
-  if (data.networth) saveJson(STORAGE_KEYS.networth, data.networth);
   if (data.forecast) saveJson(STORAGE_KEYS.forecast, data.forecast);
   if (data.progress) saveJson(STORAGE_KEYS.progress, data.progress);
   if (data.assumptions) saveJson(STORAGE_KEYS.assumptions, data.assumptions);

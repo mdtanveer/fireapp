@@ -17,6 +17,7 @@ import { formatInrShort } from "../utils/format";
 import { SnapshotDrawer } from "../components/progress/SnapshotDrawer";
 import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 import { TableSchemaEditor } from "../components/progress/TableSchemaEditor";
+import { useNetWorth } from "../state/NetWorthContext";
 
 export function Progress() {
   const [rows, setRows] = React.useState<Snapshot[]>(
@@ -36,6 +37,7 @@ export function Progress() {
     "Real Estate",
   ]);
   const [schemaEditorOpened, setSchemaEditorOpened] = React.useState(false);
+  const { refreshFromStorage } = useNetWorth();
 
   // Function to get all unique custom column names from snapshots
   const getAllCustomColumns = React.useCallback(() => {
@@ -85,17 +87,17 @@ export function Progress() {
         }
         // Add new columns to existing snapshots
         newColumns.forEach((column) => {
-          if (!(column in updatedRow.customColumns)) {
-            updatedRow.customColumns[column] = {
+          if (!(column in updatedRow.customColumns!)) {
+            updatedRow.customColumns![column] = {
               value: 0,
               type: "asset",
             };
           }
         });
         // Remove columns that no longer exist
-        Object.keys(updatedRow.customColumns).forEach((column) => {
+        Object.keys(updatedRow.customColumns!).forEach((column) => {
           if (!newColumns.includes(column)) {
-            delete updatedRow.customColumns[column];
+            delete updatedRow.customColumns![column];
           }
         });
         return updatedRow;
@@ -203,10 +205,14 @@ export function Progress() {
               const copy = [...prev];
               copy[idx] = s;
               saveJson(STORAGE_KEYS.progress, { snapshots: copy });
+              // Refresh NetWorthContext when data changes
+              refreshFromStorage();
               return copy;
             }
             const next = [...prev, s];
             saveJson(STORAGE_KEYS.progress, { snapshots: next });
+            // Refresh NetWorthContext when data changes
+            refreshFromStorage();
             return next;
           });
         }}

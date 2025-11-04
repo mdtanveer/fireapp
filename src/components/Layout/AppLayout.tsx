@@ -29,7 +29,6 @@ export function AppLayout() {
       <AppShell.Navbar p="md">
         <Group gap="xs" align="stretch" style={{ flexDirection: "column" }}>
           <Link to="/">Dashboard</Link>
-          <Link to="/plan">Plan</Link>
           <Link to="/forecast">Forecast</Link>
           <Link to="/progress">Progress</Link>
           <Link to="/expenses">Living Expenses</Link>
