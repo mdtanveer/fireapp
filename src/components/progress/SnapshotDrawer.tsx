@@ -9,6 +9,9 @@ import {
 import React from "react";
 import { Snapshot } from "../../types/progress";
 
+// Load the table schema to get dynamic columns
+import tableSchemaData from "../../data/table-schema.json";
+
 export function SnapshotDrawer({
   opened,
   onClose,
@@ -36,16 +39,9 @@ export function SnapshotDrawer({
     );
   }, [snapshot, opened]);
 
-  // Custom columns to display in the form
-  const customColumns = [
-    "Equity",
-    "Debt",
-    "Foreign Equity",
-    "NPS",
-    "EPF",
-    "Savings",
-    "Real Estate",
-  ];
+  // Get dynamic columns from table schema
+  const tableSchema = tableSchemaData as { columns: any[] };
+  const customColumns = tableSchema.columns?.map((col) => col.name) || [];
 
   return (
     <Drawer

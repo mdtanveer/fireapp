@@ -1,11 +1,39 @@
 {
   "columns": [
-    "Equity",
-    "Debt",
-    "Foreign Equity",
-    "NPS",
-    "EPF",
-    "Savings",
-    "Real Estate"
+    {
+      "name": "Equity",
+      "type": "asset",
+      "investmentTypeId": "equity"
+    },
+    {
+      "name": "Debt",
+      "type": "asset",
+      "investmentTypeId": "debt"
+    },
+    {
+      "name": "Foreign Equity",
+      "type": "asset",
+      "investmentTypeId": "equity"
+    },
+    {
+      "name": "NPS",
+      "type": "asset",
+      "investmentTypeId": "equity"
+    },
+    {
+      "name": "EPF",
+      "type": "asset",
+      "investmentTypeId": "equity"
+    },
+    {
+      "name": "Savings",
+      "type": "asset",
+      "investmentTypeId": "savings"
+    },
+    {
+      "name": "Real Estate",
+      "type": "asset",
+      "investmentTypeId": "real-estate"
+    }
   ]
 }

@@ -15,6 +15,14 @@ import { loadJson, saveJson, STORAGE_KEYS } from "../../utils/storage";
 
 // Load investment types from the data file
 import investmentTypesData from "../../data/investmenttypes.json";
+import tableSchemaData from "../../data/table-schema.json";
+
+// Define the column type with additional properties
+type Column = {
+  name: string;
+  type: "asset" | "liability";
+  investmentTypeId?: string;
+};
 
 export function TableSchemaEditor({
   opened,
@@ -24,15 +32,32 @@ export function TableSchemaEditor({
 }: {
   opened: boolean;
   onClose: () => void;
-  columns: string[];
-  onSave: (newColumns: string[]) => void;
+  columns: Column[];
+  onSave: (newColumns: Column[]) => void;
 }) {
-  const [localColumns, setLocalColumns] = React.useState<string[]>(columns);
+  const [localColumns, setLocalColumns] = React.useState<Column[]>(columns);
   const [newColumn, setNewColumn] = React.useState<string>("");
 
+  // Load default columns from table-schema.json when component mounts
+  React.useEffect(() => {
+    const defaultSchema = tableSchemaData as { columns: Column[] };
+    if (defaultSchema.columns && defaultSchema.columns.length > 0) {
+      setLocalColumns(defaultSchema.columns);
+    }
+  }, []);
+
   const handleAddColumn = () => {
-    if (newColumn.trim() && !localColumns.includes(newColumn.trim())) {
-      setLocalColumns([...localColumns, newColumn.trim()]);
+    if (
+      newColumn.trim() &&
+      !localColumns.some((col) => col.name === newColumn.trim())
+    ) {
+      // Default to asset type and equity investment type for new columns
+      const newColumnObj: Column = {
+        name: newColumn.trim(),
+        type: "asset",
+        investmentTypeId: "equity",
+      };
+      setLocalColumns([...localColumns, newColumnObj]);
       setNewColumn("");
     }
   };
@@ -48,6 +73,24 @@ export function TableSchemaEditor({
     saveJson(STORAGE_KEYS.tableSchema, { columns: localColumns });
     onSave(localColumns);
     onClose();
+  };
+
+  const handleColumnTypeChange = (
+    index: number,
+    type: "asset" | "liability"
+  ) => {
+    const newColumns = [...localColumns];
+    newColumns[index].type = type;
+    setLocalColumns(newColumns);
+  };
+
+  const handleInvestmentTypeChange = (
+    index: number,
+    investmentTypeId: string
+  ) => {
+    const newColumns = [...localColumns];
+    newColumns[index].investmentTypeId = investmentTypeId;
+    setLocalColumns(newColumns);
   };
 
   // Convert investment types to Select data format
@@ -102,14 +145,21 @@ export function TableSchemaEditor({
           <Table.Tbody>
             {localColumns.map((column, index) => (
               <Table.Tr key={index}>
-                <Table.Td>{column}</Table.Td>
+                <Table.Td>{column.name}</Table.Td>
                 <Table.Td>
                   <Select
                     data={[
                       { value: "asset", label: "Asset" },
                       { value: "liability", label: "Liability" },
                     ]}
-                    value="asset"
+                    value={column.type}
+                    onChange={(value) =>
+                      value &&
+                      handleColumnTypeChange(
+                        index,
+                        value as "asset" | "liability"
+                      )
+                    }
                     placeholder="Select type"
                     size="xs"
                   />
@@ -117,6 +167,10 @@ export function TableSchemaEditor({
                 <Table.Td>
                   <Select
                     data={investmentTypeData}
+                    value={column.investmentTypeId}
+                    onChange={(value) =>
+                      value && handleInvestmentTypeChange(index, value)
+                    }
                     placeholder="Select investment type"
                     size="xs"
                   />

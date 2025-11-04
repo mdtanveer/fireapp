@@ -28,18 +28,21 @@ export function Progress() {
   const series = React.useMemo(() => toSeries(rows), [rows]);
   const [opened, setOpened] = React.useState(false);
   const [editing, setEditing] = React.useState<Snapshot | undefined>(undefined);
-  const [customColumns, setCustomColumns] = React.useState<string[]>(
-    loadJson(STORAGE_KEYS.tableSchema, {
-      columns: [
-        "Equity",
-        "Debt",
-        "Foreign Equity",
-        "NPS",
-        "EPF",
-        "Savings",
-        "Real Estate",
-      ],
-    }).columns
+  // Load the actual schema data from table-schema.json to get the proper column structure
+  const defaultSchema = loadJson(STORAGE_KEYS.tableSchema, {
+    columns: [
+      "Equity",
+      "Debt",
+      "Foreign Equity",
+      "NPS",
+      "EPF",
+      "Savings",
+      "Real Estate",
+    ],
+  });
+
+  const [customColumns, setCustomColumns] = React.useState<any[]>(
+    defaultSchema.columns || []
   );
   const [schemaEditorOpened, setSchemaEditorOpened] = React.useState(false);
   const { refreshFromStorage } = useNetWorth();
@@ -78,7 +81,7 @@ export function Progress() {
     return netWorth;
   };
 
-  const handleSaveSchema = (newColumns: string[]) => {
+  const handleSaveSchema = (newColumns: any[]) => {
     // Update the custom columns state
     setCustomColumns(newColumns);
 
@@ -92,8 +95,11 @@ export function Progress() {
         }
         // Add new columns to existing snapshots
         newColumns.forEach((column) => {
-          if (!(column in updatedRow.customColumns!)) {
-            updatedRow.customColumns![column] = {
+          // If column is an object with name property, use that; otherwise use the column directly
+          const columnName =
+            typeof column === "object" && column.name ? column.name : column;
+          if (!(columnName in updatedRow.customColumns!)) {
+            updatedRow.customColumns![columnName] = {
               value: 0,
               type: "asset",
             };
@@ -101,7 +107,14 @@ export function Progress() {
         });
         // Remove columns that no longer exist
         Object.keys(updatedRow.customColumns!).forEach((column) => {
-          if (!newColumns.includes(column)) {
+          // Check if the column still exists in newColumns (either by name or by object match)
+          const exists = newColumns.some((newCol) => {
+            if (typeof newCol === "object" && newCol.name) {
+              return newCol.name === column;
+            }
+            return newCol === column;
+          });
+          if (!exists) {
             delete updatedRow.customColumns![column];
           }
         });
