@@ -18,6 +18,7 @@ import { SnapshotDrawer } from "../components/progress/SnapshotDrawer";
 import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 import { TableSchemaEditor } from "../components/progress/TableSchemaEditor";
 import { useNetWorth } from "../state/NetWorthContext";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 
 export function Progress() {
   const [rows, setRows] = React.useState<Snapshot[]>(
@@ -177,16 +178,38 @@ export function Progress() {
                     </Table.Td>
                   ))}
                   <Table.Td>
-                    <Button
-                      size="xs"
-                      variant="subtle"
-                      onClick={() => {
-                        setEditing(r);
-                        setOpened(true);
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    <Group gap="xs">
+                      <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        onClick={() => {
+                          setEditing(r);
+                          setOpened(true);
+                        }}
+                      >
+                        <IconEdit size={16} />
+                      </ActionIcon>
+                      <ActionIcon
+                        size="sm"
+                        color="red"
+                        variant="subtle"
+                        onClick={() => {
+                          setRows((prev) => {
+                            const filtered = prev.filter(
+                              (item) => item.id !== r.id
+                            );
+                            saveJson(STORAGE_KEYS.progress, {
+                              snapshots: filtered,
+                            });
+                            // Refresh NetWorthContext when data changes
+                            refreshFromStorage();
+                            return filtered;
+                          });
+                        }}
+                      >
+                        <IconTrash size={16} />
+                      </ActionIcon>
+                    </Group>
                   </Table.Td>
                 </Table.Tr>
               ))}
