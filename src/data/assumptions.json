@@ -1,9 +1,7 @@
 {
-  "inflationRate": 0.05,
-  "preRetirementReturn": 0.10,
-  "postRetirementReturn": 0.07,
-  "defaultMonthlyReturn": 0.008,
-  "planStartDate": "2020-01-01"
+  "inflationRate": 0.06,
+  "preRetirementReturn": 0.09,
+  "postRetirementReturn": 0.09,
+  "defaultMonthlyReturn": 0.005,
+  "planStartDate": "2025-01-01"
 }
-
-
