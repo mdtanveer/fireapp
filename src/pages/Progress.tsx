@@ -20,6 +20,9 @@ import { TableSchemaEditor } from "../components/progress/TableSchemaEditor";
 import { useNetWorth } from "../state/NetWorthContext";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 
+// Import the default schema from table-schema.json
+import defaultSchemaData from "../data/table-schema.json";
+
 export function Progress() {
   const [rows, setRows] = React.useState<Snapshot[]>(
     loadJson(STORAGE_KEYS.progress, data as any).snapshots ??
@@ -29,20 +32,13 @@ export function Progress() {
   const [opened, setOpened] = React.useState(false);
   const [editing, setEditing] = React.useState<Snapshot | undefined>(undefined);
   // Load the actual schema data from table-schema.json to get the proper column structure
-  const defaultSchema = loadJson(STORAGE_KEYS.tableSchema, {
-    columns: [
-      "Equity",
-      "Debt",
-      "Foreign Equity",
-      "NPS",
-      "EPF",
-      "Savings",
-      "Real Estate",
-    ],
-  });
+  const storedSchema = loadJson(STORAGE_KEYS.tableSchema, null);
+  const defaultSchema = storedSchema || defaultSchemaData;
 
   const [customColumns, setCustomColumns] = React.useState<any[]>(
-    defaultSchema.columns || []
+    defaultSchema.columns
+      ? defaultSchema.columns.map((col: any) => col.name)
+      : []
   );
   const [schemaEditorOpened, setSchemaEditorOpened] = React.useState(false);
   const { refreshFromStorage } = useNetWorth();
