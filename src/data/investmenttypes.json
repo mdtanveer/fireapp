@@ -1,0 +1,27 @@
+[
+  {
+    "id": "equity",
+    "name": "Equity",
+    "expectedReturn": 12
+  },
+  {
+    "id": "debt",
+    "name": "Debt",
+    "expectedReturn": 6
+  },
+  {
+    "id": "savings",
+    "name": "Savings",
+    "expectedReturn": 4
+  },
+  {
+    "id": "real-estate",
+    "name": "Real Estate",
+    "expectedReturn": 8
+  },
+  {
+    "id": "mutual-fund",
+    "name": "Mutual Fund",
+    "expectedReturn": 10
+  }
+]

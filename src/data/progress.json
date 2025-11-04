@@ -3,62 +3,158 @@
     {
       "id": "s1",
       "date": "2019-04-16",
-      "assets": 7500000,
-      "liabilities": 0,
-      "savings": 618000,
-      "investments": 4420000,
-      "realAssetEquity": 2462000,
-      "unsecuredDebt": 0
+      "customColumns": {
+        "Savings": {
+          "value": 618000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 4420000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 2462000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 0,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     },
     {
       "id": "s2",
       "date": "2020-05-06",
-      "assets": 12000000,
-      "liabilities": 0,
-      "savings": 988000,
-      "investments": 7072000,
-      "realAssetEquity": 3939000,
-      "unsecuredDebt": 0
+      "customColumns": {
+        "Savings": {
+          "value": 988000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 7072000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 3939000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 0,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     },
     {
       "id": "s3",
       "date": "2021-10-16",
-      "assets": 17000000,
-      "liabilities": 0,
-      "savings": 1401000,
-      "investments": 10000000,
-      "realAssetEquity": 5588000,
-      "unsecuredDebt": 0
+      "customColumns": {
+        "Savings": {
+          "value": 1401000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 10000000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 5588000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 0,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     },
     {
       "id": "s4",
       "date": "2022-01-16",
-      "assets": 16000000,
-      "liabilities": 0,
-      "savings": 1221000,
-      "investments": 9915000,
-      "realAssetEquity": 4864000,
-      "unsecuredDebt": 0
+      "customColumns": {
+        "Savings": {
+          "value": 1221000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 9915000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 4864000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 0,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     },
     {
       "id": "s5",
       "date": "2022-03-30",
-      "assets": 18000000,
-      "liabilities": 120000,
-      "savings": 1150000,
-      "investments": 15000000,
-      "realAssetEquity": 2790000,
-      "unsecuredDebt": 120000
+      "customColumns": {
+        "Savings": {
+          "value": 1150000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 15000000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 2790000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 120000,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     },
     {
       "id": "s6",
       "date": "2025-01-01",
-      "assets": 60000000,
-      "liabilities": 120000,
-      "savings": 1150000,
-      "investments": 15000000,
-      "realAssetEquity": 2790000,
-      "unsecuredDebt": 120000
+      "customColumns": {
+        "Savings": {
+          "value": 1150000,
+          "type": "asset",
+          "investmentTypeId": "savings"
+        },
+        "Investments": {
+          "value": 15000000,
+          "type": "asset",
+          "investmentTypeId": "equity"
+        },
+        "Real Estate": {
+          "value": 2790000,
+          "type": "asset",
+          "investmentTypeId": "real-estate"
+        },
+        "Debt": {
+          "value": 120000,
+          "type": "liability",
+          "investmentTypeId": "debt"
+        }
+      }
     }
   ]
 }
