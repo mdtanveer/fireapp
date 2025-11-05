@@ -61,74 +61,27 @@ export function LivingExpenses() {
   }, [inputs.heads, assumptions.inflationRate, assumptions.planStartDate]);
 
   return (
-    <Grid>
-      <Grid.Col span={{ base: 12, md: 5 }}>
-        <Card withBorder>
-          <Stack>
-            <Text fw={600}>Living Expenses</Text>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Start Net Worth
-              </Text>
-              <Text fw={600}>{formatInrShort(startNetWorth)}</Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Inflation (annual)
-              </Text>
-              <Text fw={600}>
-                {(assumptions.inflationRate * 100).toFixed(2)}%
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Annual return
-              </Text>
-              <Text fw={600}>
-                {(assumptions.defaultYearlyReturn * 100).toFixed(2)}%
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Total Monthly Expenses
-              </Text>
-              <Text fw={600}>{formatInrShort(totalMonthlyExpenses)}</Text>
-            </Group>
-            <CashflowForm
-              inputs={{
-                heads: inputs.heads,
-                startNetWorth,
-                inflationRate: assumptions.inflationRate,
-                defaultYearlyReturn: assumptions.defaultYearlyReturn,
-                horizonMonths: 0, // Not used in this context
-              }}
-              onChange={(next) => {
-                setInputs({ heads: next.heads });
-                saveJson(STORAGE_KEYS.livingExpenses, { heads: next.heads });
-              }}
-            />
-          </Stack>
-        </Card>
-      </Grid.Col>
-      <Grid.Col span={{ base: 12, md: 7 }}>
-        <Card withBorder>
-          <Text fw={600}>Living Expenses Summary</Text>
-          <Stack mt="md">
-            <Group justify="space-between">
-              <Text size="lg" fw={600}>
-                Total Monthly Expenses
-              </Text>
-              <Text size="lg" fw={600}>
-                {formatInrShort(totalMonthlyExpenses)}
-              </Text>
-            </Group>
-            <Text size="sm" c="dimmed">
-              This shows the calculated total monthly living expenses based on
-              your inputs.
-            </Text>
-          </Stack>
-        </Card>
-      </Grid.Col>
-    </Grid>
+    <Stack>
+      <Text fw={600}>Living Expenses</Text>
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed">
+          Total Monthly Expenses
+        </Text>
+        <Text fw={600}>{formatInrShort(totalMonthlyExpenses)}</Text>
+      </Group>
+      <CashflowForm
+        inputs={{
+          heads: inputs.heads,
+          startNetWorth,
+          inflationRate: assumptions.inflationRate,
+          defaultYearlyReturn: assumptions.defaultYearlyReturn,
+          horizonMonths: 0, // Not used in this context
+        }}
+        onChange={(next) => {
+          setInputs({ heads: next.heads });
+          saveJson(STORAGE_KEYS.livingExpenses, { heads: next.heads });
+        }}
+      />
+    </Stack>
   );
 }

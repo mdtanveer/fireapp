@@ -60,7 +60,7 @@ export function Forecast() {
           <Text size="sm">10Y: {formatInrShort(projected10y)}</Text>
         </Group>
         <LineChart
-          h={320}
+          h={520}
           data={points}
           dataKey="date"
           series={[{ name: "netWorth", label: "Net Worth", color: "teal.5" }]}
