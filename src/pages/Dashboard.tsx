@@ -7,7 +7,6 @@ import { forecastNetWorth } from "../services/forecast";
 import { TimeRange } from "../types/networth";
 import React from "react";
 import { formatInrShort } from "../utils/format";
-import { KpiCards } from "../components/KpiCards";
 import { RangeControls } from "../components/dashboard/RangeControls";
 import { AssetsList } from "../components/dashboard/AssetsList";
 import { LiabilitiesList } from "../components/dashboard/LiabilitiesList";
@@ -58,7 +57,6 @@ export function Dashboard() {
 
   return (
     <Stack>
-      <KpiCards />
       <Grid>
         <Grid.Col span={{ base: 12, md: 8 }}>
           <Card withBorder>
