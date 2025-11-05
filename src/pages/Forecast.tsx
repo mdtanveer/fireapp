@@ -64,6 +64,14 @@ export function Forecast() {
           data={points}
           dataKey="date"
           series={[{ name: "netWorth", label: "Net Worth", color: "teal.5" }]}
+          valueFormatter={formatInrShort}
+          xAxisProps={{
+            tickFormatter: (value) => {
+              return value.slice(0, 4);
+            },
+          }}
+          withDots={false}
+          gridAxis="xy"
         />
       </Card>
       <Text fw={600}>Cash Flows</Text>

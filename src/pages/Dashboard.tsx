@@ -2,6 +2,7 @@ import { Card, Grid, Group, Stack, Text } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import progressData from "../data/progress.json";
 import { latestSnapshot, toSeries } from "../services/progress";
+import defaults from "../data/forecast.json";
 import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 import { forecastNetWorth } from "../services/forecast";
 import { TimeRange } from "../types/networth";
@@ -30,10 +31,8 @@ export function Dashboard() {
   // const liabilitiesTotal = latest?.liabilities ?? 0;
 
   // Forecast series for dashboard
-  const storedForecast = loadJson(STORAGE_KEYS.forecast, {} as any);
-  const startNetWorth = latest
-    ? latest.assets - latest.liabilities
-    : storedForecast.startNetWorth ?? 0;
+  const storedForecast = loadJson(STORAGE_KEYS.forecast, defaults as any);
+  const startNetWorth = netWorth ?? storedForecast.startNetWorth ?? 0;
   const computedForecastInputs = React.useMemo(
     () => ({
       ...storedForecast,
@@ -80,6 +79,7 @@ export function Dashboard() {
               ]}
               px="xs"
               curveType="linear"
+              valueFormatter={formatInrShort}
             />
           </Card>
           <Card withBorder mt="md">
@@ -95,6 +95,13 @@ export function Dashboard() {
               ]}
               px="xs"
               curveType="linear"
+              valueFormatter={formatInrShort}
+              xAxisProps={{
+                tickFormatter: (value) => {
+                  return value.slice(0, 4);
+                },
+              }}
+              withDots={false}
             />
           </Card>
         </Grid.Col>

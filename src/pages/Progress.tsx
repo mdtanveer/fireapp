@@ -150,6 +150,7 @@ export function Progress() {
           series={[{ name: "netWorth", label: "Net Worth", color: "teal.5" }]}
           px="xs"
           curveType="linear"
+          valueFormatter={formatInrShort}
         />
       </Card>
 
