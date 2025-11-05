@@ -1,31 +1,95 @@
-import { ActionIcon, Button, Card, Group, Stack, Table, Text } from '@mantine/core';
-import { IconEdit, IconPlus, IconTrash } from '@tabler/icons-react';
-import React from 'react';
-import { CashflowHead, ForecastInputs } from '../../types/forecast';
-import { formatInrShort } from '../../utils/format';
-import { HeadEditModal } from './HeadEditModal';
-import { useAssumptions } from '../../state/AssumptionsContext';
-import { currentAmountForHead } from '../../services/forecast';
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Card,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import React from "react";
+import { CashflowHead, ForecastInputs } from "../../types/forecast";
+import { formatInrShort, friendlyDate } from "../../utils/format";
+import { HeadEditModal } from "./HeadEditModal";
+import { useAssumptions } from "../../state/AssumptionsContext";
+import { currentAmountForHead } from "../../services/forecast";
+import { addMonths } from "date-fns";
 
-export function CashflowForm({ inputs, onChange }: { inputs: ForecastInputs; onChange: (next: ForecastInputs) => void }) {
-  const income = inputs.heads.filter((h) => h.kind === 'income');
-  const expenses = inputs.heads.filter((h) => h.kind === 'expense');
-  const [opened, setOpened] = React.useState(false);
-  const [editing, setEditing] = React.useState<CashflowHead | undefined>(undefined);
+function CashflowCard({ h, onEdit }: { h: CashflowHead; onEdit: () => void }) {
   const assumptions = useAssumptions();
 
   function amountDisplay(h: CashflowHead) {
-    if ((assumptions.displayCashflowsAs ?? 'current') === 'current') {
-      const amt = currentAmountForHead(h, assumptions.inflationRate, new Date(assumptions.planStartDate));
+    if ((assumptions.displayCashflowsAs ?? "current") === "current") {
+      const amt = currentAmountForHead(
+        h,
+        assumptions.inflationRate,
+        new Date(assumptions.planStartDate)
+      );
       return `${formatInrShort(amt)} / ${h.frequency}`;
     }
-    return `${formatInrShort(h.amount)} / ${h.frequency} (${h.inputDate?.slice(0, 7) ?? '—'})`;
+    return `${formatInrShort(h.amount)} / ${h.frequency} (${
+      h.inputDate?.slice(0, 7) ?? "—"
+    })`;
   }
+
+  function durationDisplay(h: CashflowHead) {
+    if ((h.startMonthOffset ?? 0) === 0 && (h.endMonthOffset ?? 0) === 0) {
+      return "Indefinite";
+    }
+    const startDate = addMonths(
+      new Date(assumptions.planStartDate),
+      h.startMonthOffset ?? 0
+    );
+    const endDate = h.endMonthOffset
+      ? addMonths(new Date(assumptions.planStartDate), h.endMonthOffset)
+      : null;
+    return `${friendlyDate(startDate)} to ${
+      endDate ? friendlyDate(endDate) : "End of Plan"
+    }`;
+  }
+
+  return (
+    <Card withBorder onClick={onEdit}>
+      <Stack gap="xs">
+        <Group justify="space-between">
+          <Text fw={500}>{h.name}</Text>
+          <Stack>
+            <Text size="sm">{amountDisplay(h)}</Text>
+          </Stack>
+        </Group>
+        <Text size="xs" c="dimmed">
+          {durationDisplay(h)}
+        </Text>
+        <Text size="xs" c="dimmed">
+          {h.matchInflation
+            ? "Increased to match inflation"
+            : "Not inflation adjusted"}
+        </Text>
+      </Stack>
+    </Card>
+  );
+}
+
+export function CashflowForm({
+  inputs,
+  onChange,
+}: {
+  inputs: ForecastInputs;
+  onChange: (next: ForecastInputs) => void;
+}) {
+  const income = inputs.heads.filter((h) => h.kind === "income");
+  const expenses = inputs.heads.filter((h) => h.kind === "expense");
+  const [opened, setOpened] = React.useState(false);
+  const [editing, setEditing] = React.useState<CashflowHead | undefined>(
+    undefined
+  );
 
   function upsertHead(head: CashflowHead) {
     const idx = inputs.heads.findIndex((h) => h.id === head.id);
     const heads = [...inputs.heads];
-    if (idx >= 0) heads[idx] = head; else heads.push(head);
+    if (idx >= 0) heads[idx] = head;
+    else heads.push(head);
     onChange({ ...inputs, heads });
   }
 
@@ -34,64 +98,84 @@ export function CashflowForm({ inputs, onChange }: { inputs: ForecastInputs; onC
   }
 
   return (
-    <Stack>
-      <Card withBorder>
-        <Group justify="space-between" mb="xs">
-          <Text fw={600}>Income</Text>
-          <Button size="xs" leftSection={<IconPlus size={14} />} onClick={() => { setEditing(undefined); setOpened(true); }}>Add</Button>
-        </Group>
-        <Table withTableBorder withColumnBorders>
-          <Table.Tbody>
+    <>
+      <Group grow align="flex-start">
+        <Box>
+          <Group justify="space-between" mb="xs">
+            <Text fw={600}>Income</Text>
+            <Button
+              size="xs"
+              leftSection={<IconPlus size={14} />}
+              onClick={() => {
+                setEditing({
+                  id: crypto.randomUUID(),
+                  kind: "income",
+                  name: "",
+                  amount: 0,
+                  frequency: "monthly",
+                });
+                setOpened(true);
+              }}
+            >
+              Add
+            </Button>
+          </Group>
+          <Stack>
             {income.map((h) => (
-              <Table.Tr key={h.id}>
-                <Table.Td>{h.name}</Table.Td>
-                <Table.Td>{amountDisplay(h)}</Table.Td>
-                <Table.Td>
-                  <Group gap="xs">
-                    <ActionIcon size="sm" variant="subtle" onClick={() => { setEditing(h); setOpened(true); }}>
-                      <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" color="red" variant="subtle" onClick={() => deleteHead(h.id)}>
-                      <IconTrash size={16} />
-                    </ActionIcon>
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
+              <CashflowCard
+                h={h}
+                key={h.id}
+                onEdit={() => {
+                  setEditing(h);
+                  setOpened(true);
+                }}
+              />
             ))}
-          </Table.Tbody>
-        </Table>
-      </Card>
+          </Stack>
+        </Box>
 
-      <Card withBorder>
-        <Group justify="space-between" mb="xs">
-          <Text fw={600}>Expenses</Text>
-          <Button size="xs" leftSection={<IconPlus size={14} />} onClick={() => { setEditing({ id: crypto.randomUUID(), kind: 'expense', name: '', amount: 0, frequency: 'monthly' }); setOpened(true); }}>Add</Button>
-        </Group>
-        <Table withTableBorder withColumnBorders>
-          <Table.Tbody>
+        <Box>
+          <Group justify="space-between" mb="xs">
+            <Text fw={600}>Expenses</Text>
+            <Button
+              size="xs"
+              leftSection={<IconPlus size={14} />}
+              onClick={() => {
+                setEditing({
+                  id: crypto.randomUUID(),
+                  kind: "expense",
+                  name: "",
+                  amount: 0,
+                  frequency: "monthly",
+                });
+                setOpened(true);
+              }}
+            >
+              Add
+            </Button>
+          </Group>
+          <Stack>
             {expenses.map((h) => (
-              <Table.Tr key={h.id}>
-                <Table.Td>{h.name}</Table.Td>
-                <Table.Td>{amountDisplay(h)}</Table.Td>
-                <Table.Td>
-                  <Group gap="xs">
-                    <ActionIcon size="sm" variant="subtle" onClick={() => { setEditing(h); setOpened(true); }}>
-                      <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" color="red" variant="subtle" onClick={() => deleteHead(h.id)}>
-                      <IconTrash size={16} />
-                    </ActionIcon>
-                  </Group>
-                </Table.Td>
-              </Table.Tr>
+              <CashflowCard
+                h={h}
+                key={h.id}
+                onEdit={() => {
+                  setEditing(h);
+                  setOpened(true);
+                }}
+              />
             ))}
-          </Table.Tbody>
-        </Table>
-      </Card>
+          </Stack>
+        </Box>
+      </Group>
 
-      <HeadEditModal opened={opened} head={editing} onClose={() => setOpened(false)} onSave={upsertHead} />
-    </Stack>
+      <HeadEditModal
+        opened={opened}
+        head={editing}
+        onClose={() => setOpened(false)}
+        onSave={upsertHead}
+        onDelete={editing ? (head) => deleteHead(head.id) : undefined}
+      />
+    </>
   );
 }
-
-

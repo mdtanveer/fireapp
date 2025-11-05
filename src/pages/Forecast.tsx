@@ -53,66 +53,56 @@ export function Forecast() {
     points[Math.min(points.length - 1, 120)]?.netWorth ?? inputs.startNetWorth;
 
   return (
-    <Grid>
-      <Grid.Col span={{ base: 12, md: 5 }}>
-        <Card withBorder>
-          <Stack>
-            <Text fw={600}>Cash Flows</Text>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Start Net Worth
-              </Text>
-              <Text fw={600}>{formatInrShort(startNetWorth)}</Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Inflation (annual)
-              </Text>
-              <Text fw={600}>
-                {(assumptions.inflationRate * 100).toFixed(2)}%
-              </Text>
-            </Group>
-            <Group justify="space-between">
-              <Text size="sm" c="dimmed">
-                Annual return
-              </Text>
-              <Text fw={600}>
-                {(assumptions.defaultYearlyReturn * 100).toFixed(2)}%
-              </Text>
-            </Group>
-            <NumberInput
-              label="Horizon (months)"
-              value={inputs.horizonMonths}
-              onChange={(v) => {
-                const next = { ...inputs, horizonMonths: Number(v) || 0 };
-                setInputs(next);
-                saveJson(STORAGE_KEYS.forecast, next);
-              }}
-            />
-            <CashflowForm
-              inputs={computed}
-              onChange={(next) => {
-                setInputs(next);
-                saveJson(STORAGE_KEYS.forecast, next);
-              }}
-            />
-          </Stack>
-        </Card>
-      </Grid.Col>
-      <Grid.Col span={{ base: 12, md: 7 }}>
-        <Card withBorder>
-          <Group justify="space-between">
-            <Text fw={600}>Forecasted Net Worth</Text>
-            <Text size="sm">10Y: {formatInrShort(projected10y)}</Text>
-          </Group>
-          <LineChart
-            h={320}
-            data={points}
-            dataKey="date"
-            series={[{ name: "netWorth", label: "Net Worth", color: "teal.5" }]}
-          />
-        </Card>
-      </Grid.Col>
-    </Grid>
+    <Stack>
+      <Card withBorder>
+        <Group justify="space-between">
+          <Text fw={600}>Forecasted Net Worth</Text>
+          <Text size="sm">10Y: {formatInrShort(projected10y)}</Text>
+        </Group>
+        <LineChart
+          h={320}
+          data={points}
+          dataKey="date"
+          series={[{ name: "netWorth", label: "Net Worth", color: "teal.5" }]}
+        />
+      </Card>
+      <Text fw={600}>Cash Flows</Text>
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed">
+          Start Net Worth
+        </Text>
+        <Text fw={600}>{formatInrShort(startNetWorth)}</Text>
+      </Group>
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed">
+          Inflation (annual)
+        </Text>
+        <Text fw={600}>{(assumptions.inflationRate * 100).toFixed(2)}%</Text>
+      </Group>
+      <Group justify="space-between">
+        <Text size="sm" c="dimmed">
+          Annual return
+        </Text>
+        <Text fw={600}>
+          {(assumptions.defaultYearlyReturn * 100).toFixed(2)}%
+        </Text>
+      </Group>
+      <NumberInput
+        label="Horizon (months)"
+        value={inputs.horizonMonths}
+        onChange={(v) => {
+          const next = { ...inputs, horizonMonths: Number(v) || 0 };
+          setInputs(next);
+          saveJson(STORAGE_KEYS.forecast, next);
+        }}
+      />
+      <CashflowForm
+        inputs={computed}
+        onChange={(next) => {
+          setInputs(next);
+          saveJson(STORAGE_KEYS.forecast, next);
+        }}
+      />
+    </Stack>
   );
 }
