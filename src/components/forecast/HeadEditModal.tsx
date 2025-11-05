@@ -124,12 +124,15 @@ export function HeadEditModal({
           />
         </Group>
 
-        <TextInput
-          label="Input date (YYYY-MM-DD)"
-          value={local.inputDate ?? ""}
-          onChange={(e) =>
-            setLocal({ ...local, inputDate: e.currentTarget.value })
-          }
+        <MonthPickerInput
+          label="Input month"
+          value={new Date(local.inputDate ?? assumptions.planStartDate)}
+          onChange={(date) => {
+            if (date) {
+              const inputDateStr = date.toISOString().split("T")[0];
+              setLocal({ ...local, inputDate: inputDateStr });
+            }
+          }}
         />
 
         {/* Time Range */}

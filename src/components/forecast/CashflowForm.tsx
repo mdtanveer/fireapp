@@ -20,15 +20,23 @@ function CashflowCard({ h, onEdit }: { h: CashflowHead; onEdit: () => void }) {
   const assumptions = useAssumptions();
 
   function amountDisplay(h: CashflowHead) {
+    var displayFreq = h.frequency == "monthly" ? "mo" : "yr";
+    if (
+      h.startMonthOffset &&
+      h.startMonthOffset !== 0 &&
+      h.startMonthOffset === h.endMonthOffset
+    ) {
+      displayFreq = "once";
+    }
     if ((assumptions.displayCashflowsAs ?? "current") === "current") {
       const amt = currentAmountForHead(
         h,
         assumptions.inflationRate,
         new Date(assumptions.planStartDate)
       );
-      return `${formatInrShort(amt)} / ${h.frequency}`;
+      return `${formatInrShort(amt)} / ${displayFreq}`;
     }
-    return `${formatInrShort(h.amount)} / ${h.frequency} (${
+    return `${formatInrShort(h.amount)} / ${displayFreq} (${
       h.inputDate?.slice(0, 7) ?? "—"
     })`;
   }
@@ -44,6 +52,11 @@ function CashflowCard({ h, onEdit }: { h: CashflowHead; onEdit: () => void }) {
     const endDate = h.endMonthOffset
       ? addMonths(new Date(assumptions.planStartDate), h.endMonthOffset)
       : null;
+
+    if (h.startMonthOffset === h.endMonthOffset) {
+      return `${friendlyDate(startDate)}`;
+    }
+
     return `${friendlyDate(startDate)} to ${
       endDate ? friendlyDate(endDate) : "End of Plan"
     }`;
