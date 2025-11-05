@@ -39,13 +39,13 @@ export function Dashboard() {
       ...storedForecast,
       startNetWorth,
       inflationRate: assumptions.inflationRate,
-      defaultMonthlyReturn: assumptions.defaultMonthlyReturn,
+      defaultYearlyReturn: assumptions.defaultYearlyReturn,
     }),
     [
       storedForecast,
       startNetWorth,
       assumptions.inflationRate,
-      assumptions.defaultMonthlyReturn,
+      assumptions.defaultYearlyReturn,
     ]
   );
   const forecastSeries = React.useMemo(

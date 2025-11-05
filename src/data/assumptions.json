@@ -1,5 +1,5 @@
 {
   "inflationRate": 0.06,
-  "defaultMonthlyReturn": 0.005,
+  "defaultYearlyReturn": 0.06,
   "planStartDate": "2025-01-01"
 }

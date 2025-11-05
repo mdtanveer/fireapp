@@ -4,7 +4,7 @@ import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
 
 export type Assumptions = {
   inflationRate: number;
-  defaultMonthlyReturn: number;
+  defaultYearlyReturn: number;
   displayCashflowsAs?: "current" | "input";
   planStartDate: string; // YYYY-MM-DD
 };

@@ -20,14 +20,14 @@ export function GlobalParams() {
   const [openedDisp, setOpenedDisp] = React.useState(false);
   const [local, setLocal] = React.useState({
     inflationRate: assumptions.inflationRate,
-    monthly: assumptions.defaultMonthlyReturn,
+    yearly: assumptions.defaultYearlyReturn,
     planStartDate: assumptions.planStartDate,
   });
 
   React.useEffect(() => {
     setLocal({
       inflationRate: assumptions.inflationRate,
-      monthly: assumptions.defaultMonthlyReturn,
+      yearly: assumptions.defaultYearlyReturn,
       planStartDate: assumptions.planStartDate,
     });
   }, [assumptions]);
@@ -187,16 +187,16 @@ export function GlobalParams() {
             leftSection={<IconAdjustments size={16} />}
             onClick={() => setOpenedInv((o) => !o)}
           >
-            Growth {`${(assumptions.defaultMonthlyReturn * 100).toFixed(1)}% m`}
+            Growth {`${(assumptions.defaultYearlyReturn * 100).toFixed(1)}% y`}
           </Button>
         </Popover.Target>
         <Popover.Dropdown>
           <Stack>
             <NumberInput
-              label="Monthly portfolio (%)"
-              value={local.monthly * 100}
+              label="Annual portfolio (%)"
+              value={local.yearly * 100}
               onChange={(v) =>
-                setLocal((s) => ({ ...s, monthly: (Number(v) || 0) / 100 }))
+                setLocal((s) => ({ ...s, yearly: (Number(v) || 0) / 100 }))
               }
               step={0.1}
               min={-100}
@@ -214,7 +214,7 @@ export function GlobalParams() {
                 size="xs"
                 onClick={() => {
                   assumptions.setAssumptions({
-                    defaultMonthlyReturn: local.monthly,
+                    defaultYearlyReturn: local.yearly,
                   });
                   setOpenedInv(false);
                 }}

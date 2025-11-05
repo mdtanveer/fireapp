@@ -1,8 +1,8 @@
-export type Frequency = 'monthly' | 'yearly';
+export type Frequency = "monthly" | "yearly";
 
 export type CashflowHead = {
   id: string;
-  kind: 'income' | 'expense';
+  kind: "income" | "expense";
   name: string;
   amount: number;
   inputDate?: string; // YYYY-MM-DD when the amount was entered
@@ -13,19 +13,21 @@ export type CashflowHead = {
   matchInflation?: boolean;
   essential?: boolean; // for "Flexibility" preset
   notes?: string;
-  allocationMode?: 'even-monthly' | 'annual-lump';
+  allocationMode?: "even-monthly" | "annual-lump";
 };
 
 export type ForecastInputs = {
   startNetWorth: number;
   inflationRate: number;
-  defaultMonthlyReturn: number;
+  defaultYearlyReturn: number;
   horizonMonths: number;
   heads: CashflowHead[];
 };
 
-export type ForecastPoint = { monthIndex: number; date: string; netWorth: number };
+export type ForecastPoint = {
+  monthIndex: number;
+  date: string;
+  netWorth: number;
+};
 
 export type ForecastResult = { points: ForecastPoint[] };
-
-

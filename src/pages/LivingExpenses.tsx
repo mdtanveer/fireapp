@@ -82,10 +82,10 @@ export function LivingExpenses() {
             </Group>
             <Group justify="space-between">
               <Text size="sm" c="dimmed">
-                Monthly return
+                Annual return
               </Text>
               <Text fw={600}>
-                {(assumptions.defaultMonthlyReturn * 100).toFixed(2)}%
+                {(assumptions.defaultYearlyReturn * 100).toFixed(2)}%
               </Text>
             </Group>
             <Group justify="space-between">
@@ -99,7 +99,7 @@ export function LivingExpenses() {
                 heads: inputs.heads,
                 startNetWorth,
                 inflationRate: assumptions.inflationRate,
-                defaultMonthlyReturn: assumptions.defaultMonthlyReturn,
+                defaultYearlyReturn: assumptions.defaultYearlyReturn,
                 horizonMonths: 0, // Not used in this context
               }}
               onChange={(next) => {

@@ -34,13 +34,13 @@ export function Forecast() {
       ...inputs,
       startNetWorth,
       inflationRate: assumptions.inflationRate,
-      defaultMonthlyReturn: assumptions.defaultMonthlyReturn,
+      defaultYearlyReturn: assumptions.defaultYearlyReturn,
     }),
     [
       inputs,
       startNetWorth,
       assumptions.inflationRate,
-      assumptions.defaultMonthlyReturn,
+      assumptions.defaultYearlyReturn,
     ]
   );
 
@@ -74,10 +74,10 @@ export function Forecast() {
             </Group>
             <Group justify="space-between">
               <Text size="sm" c="dimmed">
-                Monthly return
+                Annual return
               </Text>
               <Text fw={600}>
-                {(assumptions.defaultMonthlyReturn * 100).toFixed(2)}%
+                {(assumptions.defaultYearlyReturn * 100).toFixed(2)}%
               </Text>
             </Group>
             <NumberInput

@@ -116,7 +116,9 @@ export function forecastNetWorth(
       0
     );
     const surplus = income - expense;
-    nw = (nw + surplus) * (1 + inputs.defaultMonthlyReturn);
+    // Convert yearly return to monthly return for compounding
+    const monthlyReturn = Math.pow(1 + inputs.defaultYearlyReturn, 1 / 12) - 1;
+    nw = (nw + surplus) * (1 + monthlyReturn);
     const base = planStartDate ? new Date(planStartDate) : new Date();
     const d = new Date(base.getFullYear(), base.getMonth() + m, 1);
     points.push({
