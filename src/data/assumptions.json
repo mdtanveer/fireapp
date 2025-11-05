@@ -1,7 +1,5 @@
 {
   "inflationRate": 0.06,
-  "preRetirementReturn": 0.09,
-  "postRetirementReturn": 0.09,
   "defaultMonthlyReturn": 0.005,
   "planStartDate": "2025-01-01"
 }

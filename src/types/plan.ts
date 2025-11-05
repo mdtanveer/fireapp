@@ -5,8 +5,6 @@ export type PlanInputs = {
   currentNetWorth: number;
   annualIncome: number;
   annualExpenses: number;
-  preRetirementReturn: number;
-  postRetirementReturn: number;
   inflationRate: number;
   targetRetirementSpending: number;
   spendingInTodaysDollars: boolean;
@@ -30,5 +28,3 @@ export type ProjectionResult = {
   depletionAge?: number;
   success: boolean;
 };
-
-
