@@ -77,6 +77,7 @@ export function SnapshotDrawer({
                 })
               }
               thousandSeparator
+              thousandsGroupStyle="lakh"
             />
           );
         })}
