@@ -67,7 +67,9 @@ export function LivingExpenses() {
         <Text size="sm" c="dimmed">
           Total Monthly Expenses
         </Text>
-        <Text fw={600}>{formatInrShort(totalMonthlyExpenses)}</Text>
+        <Text fw={600} size="xl">
+          {formatInrShort(totalMonthlyExpenses)}
+        </Text>
       </Group>
       <CashflowForm
         inputs={{
