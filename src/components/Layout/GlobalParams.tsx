@@ -34,72 +34,6 @@ export function GlobalParams() {
 
   return (
     <Group>
-      <Popover
-        opened={openedInf}
-        onChange={setOpenedInf}
-        position="bottom-end"
-        withArrow
-      >
-        <Popover.Target>
-          <Button
-            size="xs"
-            variant="default"
-            leftSection={<IconPercentage size={16} />}
-            onClick={() => setOpenedInf((o) => !o)}
-          >
-            Inflation {(assumptions.inflationRate * 100).toFixed(1)}%
-          </Button>
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Stack>
-            <NumberInput
-              label="Annual inflation (%)"
-              value={local.inflationRate * 100}
-              onChange={(v) =>
-                setLocal((s) => ({
-                  ...s,
-                  inflationRate: (Number(v) || 0) / 100,
-                }))
-              }
-              step={0.1}
-              min={0}
-              max={50}
-            />
-            <TextInput
-              label="Plan start date (YYYY-MM-DD)"
-              value={local.planStartDate}
-              onChange={(e) =>
-                setLocal((s) => ({
-                  ...s,
-                  planStartDate: e.currentTarget.value,
-                }))
-              }
-            />
-            <Group justify="space-between">
-              <Button
-                size="xs"
-                variant="default"
-                onClick={() => assumptions.resetAssumptions()}
-              >
-                Reset
-              </Button>
-              <Button
-                size="xs"
-                onClick={() => {
-                  assumptions.setAssumptions({
-                    inflationRate: local.inflationRate,
-                    planStartDate: local.planStartDate,
-                  });
-                  setOpenedInf(false);
-                }}
-              >
-                Apply
-              </Button>
-            </Group>
-          </Stack>
-        </Popover.Dropdown>
-      </Popover>
-
       <Button
         size="xs"
         variant="default"
@@ -202,6 +136,29 @@ export function GlobalParams() {
               min={-100}
               max={100}
             />
+            <NumberInput
+              label="Annual inflation (%)"
+              value={local.inflationRate * 100}
+              onChange={(v) =>
+                setLocal((s) => ({
+                  ...s,
+                  inflationRate: (Number(v) || 0) / 100,
+                }))
+              }
+              step={0.1}
+              min={0}
+              max={50}
+            />
+            <TextInput
+              label="Plan start date (YYYY-MM-DD)"
+              value={local.planStartDate}
+              onChange={(e) =>
+                setLocal((s) => ({
+                  ...s,
+                  planStartDate: e.currentTarget.value,
+                }))
+              }
+            />
             <Group justify="space-between">
               <Button
                 size="xs"
@@ -214,9 +171,11 @@ export function GlobalParams() {
                 size="xs"
                 onClick={() => {
                   assumptions.setAssumptions({
+                    inflationRate: local.inflationRate,
+                    planStartDate: local.planStartDate,
                     defaultYearlyReturn: local.yearly,
                   });
-                  setOpenedInv(false);
+                  setOpenedInf(false);
                 }}
               >
                 Apply
