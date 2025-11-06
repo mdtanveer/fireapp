@@ -1,4 +1,4 @@
-import { Card, Grid, Group, Stack, Text } from "@mantine/core";
+import { Card, Grid, Group, Stack, Text, Switch } from "@mantine/core";
 import React from "react";
 import { CashflowHead } from "../types/forecast";
 import { formatInrShort } from "../utils/format";
@@ -60,9 +60,21 @@ export function LivingExpenses() {
     }, 0);
   }, [inputs.heads, assumptions.inflationRate, assumptions.planStartDate]);
 
+  const [viewMode, setViewMode] = React.useState<"cards" | "table">("cards");
   return (
     <Stack>
-      <Text fw={600}>Living Expenses</Text>
+      <Group justify="space-between">
+        <Text fw={600}>Living Expenses</Text>
+        <Group>
+          <Text size="sm">Table View</Text>
+          <Switch
+            checked={viewMode === "table"}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setViewMode(e.currentTarget.checked ? "table" : "cards")
+            }
+          />
+        </Group>
+      </Group>
       <Group justify="space-between">
         <Text size="sm" c="dimmed">
           Total Monthly Expenses
@@ -72,6 +84,7 @@ export function LivingExpenses() {
         </Text>
       </Group>
       <CashflowForm
+        viewMode={viewMode}
         inputs={{
           heads: inputs.heads,
           startNetWorth,

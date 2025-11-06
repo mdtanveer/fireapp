@@ -1,17 +1,20 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import defaults from "../data/assumptions.json";
 import { loadJson, saveJson, STORAGE_KEYS } from "../utils/storage";
+import { ForecastInputs } from "../types/forecast";
 
 export type Assumptions = {
   inflationRate: number;
   defaultYearlyReturn: number;
   displayCashflowsAs?: "current" | "input";
-  planStartDate: string; // YYYY-MM-DD
+  planStartDate: string;
+  forecastInputs?: ForecastInputs;
 };
 
 type AssumptionsContextValue = Assumptions & {
   setAssumptions: (next: Partial<Assumptions>) => void;
   resetAssumptions: () => void;
+  setForecastInputs: (next: ForecastInputs) => void;
 };
 
 const Ctx = createContext<AssumptionsContextValue | null>(null);
@@ -33,6 +36,12 @@ export function AssumptionsProvider({
       setAssumptions: (next) =>
         setAssumptionsState((prev) => {
           const v = { ...prev, ...next };
+          saveJson(STORAGE_KEYS.assumptions, v);
+          return v;
+        }),
+      setForecastInputs: (next) =>
+        setAssumptionsState((prev) => {
+          const v = { ...prev, forecastInputs: next };
           saveJson(STORAGE_KEYS.assumptions, v);
           return v;
         }),

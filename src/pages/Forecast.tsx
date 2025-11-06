@@ -7,6 +7,7 @@ import {
   Text,
   SimpleGrid,
   Box,
+  Switch,
 } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import React from "react";
@@ -76,6 +77,7 @@ export function Forecast() {
   const projectionNetWorths = [100000000, 150000000, 250000000, 500000000];
   const yearProjections = projectionNetWorths.map((val) => yearProjection(val));
 
+  const [viewMode, setViewMode] = React.useState<"cards" | "table">("cards");
   return (
     <Stack>
       <Card withBorder>
@@ -126,7 +128,18 @@ export function Forecast() {
           gridAxis="xy"
         />
       </Card>
-      <Text fw={600}>Cash Flows</Text>
+      <Group justify="space-between">
+        <Text fw={600}>Cash Flows</Text>
+        <Group>
+          <Text size="sm">Table View</Text>
+          <Switch
+            checked={viewMode === "table"}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setViewMode(e.currentTarget.checked ? "table" : "cards")
+            }
+          />
+        </Group>
+      </Group>
       <Group justify="space-between">
         <Text size="sm" c="dimmed">
           Start Net Worth
@@ -162,6 +175,7 @@ export function Forecast() {
           setInputs(next);
           saveJson(STORAGE_KEYS.forecast, next);
         }}
+        viewMode={viewMode}
       />
     </Stack>
   );
