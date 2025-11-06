@@ -114,6 +114,9 @@ export function HeadEditModal({
             onChange={(v) => setLocal({ ...local, amount: Number(v) || 0 })}
             thousandSeparator
             thousandsGroupStyle="lakh"
+            step={1000}
+            stepHoldDelay={500}
+            stepHoldInterval={100}
           />
           <SegmentedControl
             data={[

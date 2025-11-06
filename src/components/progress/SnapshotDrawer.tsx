@@ -78,6 +78,9 @@ export function SnapshotDrawer({
               }
               thousandSeparator
               thousandsGroupStyle="lakh"
+              step={10000}
+              stepHoldDelay={500}
+              stepHoldInterval={100}
             />
           );
         })}

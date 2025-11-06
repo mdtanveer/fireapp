@@ -1,4 +1,13 @@
-import { Card, Grid, Group, NumberInput, Stack, Text } from "@mantine/core";
+import {
+  Card,
+  Grid,
+  Group,
+  NumberInput,
+  Stack,
+  Text,
+  SimpleGrid,
+  Box,
+} from "@mantine/core";
 import { LineChart } from "@mantine/charts";
 import React from "react";
 import defaults from "../data/forecast.json";
@@ -49,16 +58,59 @@ export function Forecast() {
     [computed, assumptions.planStartDate]
   );
   const points = result.points;
-  const projected10y =
-    points[Math.min(points.length - 1, 120)]?.netWorth ?? inputs.startNetWorth;
+
+  const netWorthProjection = (years: number) => {
+    return (
+      points[Math.min(points.length - 1, 12 * years)]?.netWorth ??
+      inputs.startNetWorth
+    );
+  };
+
+  const yearProjection = (networth: number) => {
+    const result = points.findIndex((pt) => pt.netWorth >= networth);
+    return result == -1 ? -1 : result / 12;
+  };
+
+  const projectionYears = [5, 10, 15, 20];
+  const nwProjections = projectionYears.map((val) => netWorthProjection(val));
+  const projectionNetWorths = [100000000, 150000000, 250000000, 500000000];
+  const yearProjections = projectionNetWorths.map((val) => yearProjection(val));
 
   return (
     <Stack>
       <Card withBorder>
-        <Group justify="space-between">
-          <Text fw={600}>Forecasted Net Worth</Text>
-          <Text size="sm">10Y: {formatInrShort(projected10y)}</Text>
-        </Group>
+        <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md">
+          {projectionYears.map((val, idx) => {
+            return (
+              <Box>
+                <Text size="sm" fw={500} c="dimmed">
+                  {`${val}-years`}
+                </Text>
+                <Text size="lg" fw={700}>
+                  {formatInrShort(nwProjections[idx])}
+                </Text>
+              </Box>
+            );
+          })}
+          {projectionNetWorths.map((val, idx) => {
+            return (
+              <Box>
+                <Text size="sm" fw={500} c="dimmed">
+                  {formatInrShort(val)}
+                </Text>
+                <Text size="lg" fw={700}>
+                  {yearProjections[idx] == -1
+                    ? "--"
+                    : yearProjections[idx].toFixed(0)}{" "}
+                  yr
+                </Text>
+              </Box>
+            );
+          })}
+        </SimpleGrid>
+      </Card>
+
+      <Card withBorder>
         <LineChart
           h={520}
           data={points}
