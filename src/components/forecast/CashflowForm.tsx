@@ -6,6 +6,7 @@ import {
   Group,
   Stack,
   Text,
+  SimpleGrid,
 } from "@mantine/core";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import React from "react";
@@ -63,7 +64,7 @@ function CashflowCard({ h, onEdit }: { h: CashflowHead; onEdit: () => void }) {
   }
 
   return (
-    <Card withBorder onClick={onEdit}>
+    <Card onClick={onEdit}>
       <Stack gap="xs">
         <Group justify="space-between">
           <Text fw={500}>{h.name}</Text>
@@ -112,7 +113,7 @@ export function CashflowForm({
 
   return (
     <>
-      <Group grow align="flex-start">
+      <Stack>
         <Box>
           <Group justify="space-between" mb="xs">
             <Text fw={600}>Income</Text>
@@ -133,7 +134,7 @@ export function CashflowForm({
               Add
             </Button>
           </Group>
-          <Stack>
+          <SimpleGrid cols={3}>
             {income.map((h) => (
               <CashflowCard
                 h={h}
@@ -144,7 +145,7 @@ export function CashflowForm({
                 }}
               />
             ))}
-          </Stack>
+          </SimpleGrid>
         </Box>
 
         <Box>
@@ -167,7 +168,7 @@ export function CashflowForm({
               Add
             </Button>
           </Group>
-          <Stack>
+          <SimpleGrid cols={3}>
             {expenses.map((h) => (
               <CashflowCard
                 h={h}
@@ -178,9 +179,9 @@ export function CashflowForm({
                 }}
               />
             ))}
-          </Stack>
+          </SimpleGrid>
         </Box>
-      </Group>
+      </Stack>
 
       <HeadEditModal
         opened={opened}
